@@ -1,7 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+const BASE_URL = 'http://localhost:9000/';
+
 function App() {
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  
+
+   useEffect(() =>{
+    const fetchFoodData = async () =>{
+
+      try {
+        const response = await fetch(BASE_URL);
+        
+        setLoading(true);
+        
+        const result = await response.json();
+        
+        setData(result);
+  
+        setLoading(false);
+  
+      } catch (error) {
+        setError("We find now Data from Network");
+      }
+     
+    }
+    fetchFoodData();
+   }, []);
+
+   console.log(data);
+   if(error) return <h1>{error}</h1>;
+   if(loading) return <h1>Loading....</h1>
+  
+
   return (
     <Container>
       <TopContainer>
